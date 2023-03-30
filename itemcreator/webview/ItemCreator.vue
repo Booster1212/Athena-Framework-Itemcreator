@@ -96,9 +96,9 @@ export default {
             const behaviorOutput = `const itemCreatorBehavior = ${JSON.stringify(this.behavior)}`;
             const generatedItem = {
                 name: `${this.name}`,
-                dbName: `${this.dbName}`,
+                dbName: `${this.dbName.replace(/ /g, '-')}`,
                 behavior: 'itemCreatorBehavior',
-                icon: `${this.icon}`,
+                icon: `${this.icon.replace(/ /g, '-')}`,
                 data: JSON.parse(this.data),
                 consumableEventToCall: `${this.eventToCall}`,
                 maxStack: parseInt(this.stackSize),
