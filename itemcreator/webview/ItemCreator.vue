@@ -13,7 +13,7 @@
                 />
             </div>
             <div class="form-group">
-                <label for="name">Name:</label>
+                <label for="name">Item Name:</label>
                 <input
                     type="text"
                     id="name"
@@ -24,11 +24,11 @@
             </div>
             <div class="form-group">
                 <label for="dbName">DB Name:</label>
-                <input type="text" id="dbName" v-model="dbName" :placeholder="dbName" />
+                <input type="text" id="dbName" v-model="dbName" :placeholder="dbName" disabled />
             </div>
             <div class="form-group">
                 <label for="icon">Icon:</label>
-                <input type="text" id="icon" v-model="icon" :placeholder="icon" />
+                <input type="text" id="icon" v-model="icon" :placeholder="icon" disabled />
             </div>
             <div class="form-group">
                 <label for="dbName">Consumable Event:</label>
@@ -46,19 +46,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="category">Item Category:</label>
-                <select id="category" v-model="category">
-                    <option value="" disabled>Select a Item category</option>
-                    <option :value="categorys[0]">Food</option>
-                    <option :value="categorys[1]">Drinks</option>
-                    <option :value="categorys[2]">Other</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="stacksize">Stacksize:</label>
                 <input type="number" id="stacksize" v-model="stackSize" :placeholder="stackSize" />
             </div>
             <button type="button" class="submit-btn" @click="generateOutput">Create Item</button>
+            <button type="button" class="submit-btn" @click="clearList">Clear Array</button>
         </form>
     </div>
 </template>
@@ -71,13 +63,11 @@ export default {
             pluginName: '',
             name: '',
             icon: '',
-            eventToCall: 'NO_EVENT',
+            eventToCall: 'example-event',
             dbName: '',
             behavior: '',
-            category: '',
             data: '',
             behaviors: [{ canDrop: true, canStack: true }],
-            categorys: ['Food', 'Drinks', 'Other'],
             stackSize: 64,
             itemList: [],
         };
@@ -86,10 +76,11 @@ export default {
         (this.pluginName = 'Item-Creator'),
             (this.name = 'Beer'),
             (this.icon = `@AthenaPlugins/icons/${this.pluginName}/${this.name}`),
-            (this.dbName = `${this.pluginName.toLowerCase()}-${this.name.toLowerCase()}`);
+            (this.dbName = `${this.pluginName.toLowerCase().replace(/ /g, '-')}-${this.name
+                .toLowerCase()
+                .replace(/ /g, '-')}`);
         this.behavior = this.behaviors[0];
-        this.category = this.categorys[2];
-        this.data = '{}';
+        this.data = '{ "exampleData": null }';
     },
     methods: {
         generateOutput() {
@@ -119,12 +110,23 @@ export default {
 
             WebviewEvents.emitServer('item-creator:generate-file', output);
         },
+
+        clearList() {
+            this.itemList = [];
+        },
+
         changeIconInput() {
-            this.icon = `@AthenaPlugins/icons/${this.pluginName}/${this.name}`;
+            this.icon = `@AthenaPlugins/icons/${this.pluginName.toLowerCase().replace(/ /g, '-')}/${this.name
+                .toLowerCase()
+                .replace(/ /g, '-')}`;
         },
+
         changeInput() {
-            this.dbName = `${this.pluginName.toLowerCase()}-${this.name.toLowerCase()}`;
+            this.dbName = `${this.pluginName.toLowerCase().replace(/ /g, '-')}-${this.name
+                .toLowerCase()
+                .replace(/ /g, '-')}`;
         },
+
         changeBehavior(index) {
             this.behavior = this.behaviors[index];
         },
