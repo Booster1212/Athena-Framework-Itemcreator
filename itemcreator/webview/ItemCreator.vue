@@ -78,6 +78,7 @@ export default {
             behaviors: [{ canDrop: true, canStack: true }],
             categorys: ['Food', 'Drinks', 'Other'],
             stackSize: 64,
+            itemList: [],
         };
     },
     mounted() {
@@ -92,16 +93,21 @@ export default {
     methods: {
         generateOutput() {
             const behaviorOutput = `const itemCreatorBehavior = ${JSON.stringify(this.behavior)}`;
-            const output = `const itemCreatorItem: BaseItem = {
-                name: '${this.name}',
-                dbName: '${this.dbName}',
-                behavior: itemCreatorBehavior,
-                icon: '${this.icon}',
-                data: {},
-                consumableEventToCall: ${this.eventToCall},
-                maxStack: ${this.stackSize},
-            };`;
+            const generatedItem = {
+                name: `${this.name}`,
+                dbName: `${this.dbName}`,
+                behavior: this.behavior,
+                icon: `${this.icon}`,
+                data: this.data,
+                consumableEventToCall: `${this.eventToCall}`,
+                maxStack: `${this.stackSize}`,
+            };
+
+            this.itemList.push(generatedItem);
             console.log(behaviorOutput);
+            const stringifiedItemList = JSON.stringify(this.itemList);
+            const parsedItemList = JSON.parse(stringifiedItemList);
+            const output = `const itemCreatorArray: Array<BaseItem> = ${JSON.stringify(parsedItemList, undefined, 4)}`;
             console.log(output);
         },
         changeIconInput() {
