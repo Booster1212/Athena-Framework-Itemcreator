@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import WebviewEvents from '@utility/webViewEvents';
 export default {
     data() {
         return {
@@ -96,19 +97,27 @@ export default {
             const generatedItem = {
                 name: `${this.name}`,
                 dbName: `${this.dbName}`,
-                behavior: this.behavior,
+                behavior: 'itemCreatorBehavior',
                 icon: `${this.icon}`,
-                data: this.data,
+                data: JSON.parse(this.data),
                 consumableEventToCall: `${this.eventToCall}`,
-                maxStack: `${this.stackSize}`,
+                maxStack: parseInt(this.stackSize),
             };
 
             this.itemList.push(generatedItem);
-            console.log(behaviorOutput);
+
             const stringifiedItemList = JSON.stringify(this.itemList);
             const parsedItemList = JSON.parse(stringifiedItemList);
-            const output = `const itemCreatorArray: Array<BaseItem> = ${JSON.stringify(parsedItemList, undefined, 4)}`;
+            const output = `import { BaseItem } from "@AthenaShared/interfaces/item"\n\n${behaviorOutput}\nconst itemCreatorArray: Array<BaseItem> = ${JSON.stringify(
+                parsedItemList,
+                undefined,
+                4,
+            )}`;
+
+            console.log(behaviorOutput);
             console.log(output);
+
+            WebviewEvents.emitServer('item-creator:generate-file', output);
         },
         changeIconInput() {
             this.icon = `@AthenaPlugins/icons/${this.pluginName}/${this.name}`;
@@ -128,10 +137,11 @@ export default {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #535151;
+    background-color: #161616a9;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     font-family: Arial, sans-serif;
+    margin-right: 10%;
 }
 
 .form {
