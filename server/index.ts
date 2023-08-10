@@ -7,7 +7,7 @@ Athena.systems.plugins.registerPlugin('item-creator', () => {
     alt.log(`~lg~Item Creator successfully loaded.`);
 });
 
-const currentPath = path.join(process.cwd(), '/src/core/plugins/itemcreator/server/config/items.ts');
+const currentPath = path.join(process.cwd(), '/src/core/plugins/itemcreator/server/config/items.txt');
 
 alt.onClient('item-creator:generate-file', (player: alt.Player, output: string) => {
     try {

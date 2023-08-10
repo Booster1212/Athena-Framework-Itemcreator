@@ -1,0 +1,27 @@
+import { BaseItem } from "@AthenaShared/interfaces/item"
+
+const itemCreatorBehavior = {"canDrop":true,"canStack":true}
+const itemCreatorArray: Array<BaseItem> = [
+    {
+        "name": "Joinnnt",
+        "dbName": "item-creator-joinnnt",
+        "behavior": itemCreatorBehavior,
+        "icon": "@AthenaPlugins/icons/item-creator/joinnnt",
+        "data": {
+            "exampleData": null
+        },
+        "consumableEventToCall": "example-event",
+        "maxStack": 64
+    },
+    {
+        "name": "Joint",
+        "dbName": "item-creator-joint",
+        "behavior": itemCreatorBehavior,
+        "icon": "@AthenaPlugins/icons/item-creator/joint",
+        "data": {
+            "exampleData": null
+        },
+        "consumableEventToCall": "example-event",
+        "maxStack": 64
+    }
+]
